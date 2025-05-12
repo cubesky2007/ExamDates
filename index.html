@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>時間割表示</title>
+  <style>
+    body {
+      font-family: "Yu Gothic", "Segoe UI", sans-serif;
+      background: linear-gradient(to bottom, #00f6ff, #00f6ff);
+      color: #333;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 15px 40px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    .science-btn {
+      background-color: #4285F4;
+      color: white;
+    }
+
+    .arts-btn {
+      background-color: #D32F2F;
+      color: white;
+    }
+
+    button:hover {
+      opacity: 0.85;
+      transform: scale(1.03);
+    }
+
+    table {
+      margin: 30px auto;
+      border-collapse: collapse;
+      width: 80%;
+      max-width: 700px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      border: 1px solid #999;
+      padding: 12px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    th {
+      background-color: #f1f1f1;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    h3 {
+      margin-top: 30px;
+      font-size: 24px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<h2>コースを選んでください</h2>
+<button class="science-btn" onclick="showTable('science')">理系</button>
+<button class="arts-btn" onclick="showTable('arts')">文系</button>
+
+<!-- 理系の時間割 -->
+<div id="science" class="hidden">
+  <h3>理系時間割</h3>
+  <table>
+    <tr><th>日</th><th>1時間目</th><th>2時間目</th><th>3時間目</th></tr>
+    <tr><td>1日目</td><td>共通共通数学（70）</td><td>理系社会</td><td>理系物理（60）</td></tr>
+    <tr><td>2日目</td><td>古文</td><td>英作文</td><td>-</td></tr>
+    <tr><td>3日目</td><td>現代国語</td><td>理系数学（60）</td><td>-</td></tr>
+    <tr><td>4日目</td><td>共通英語</td><td>漢文</td><td>共通数学（60）</td></tr>
+    <tr><td>5日目</td><td>理系化学（60）</td><td>英読解（60）</td><td>-</td></tr>
+  </table>
+</div>
+
+<!-- 文系の時間割 -->
+<div id="arts" class="hidden">
+  <h3>文系時間割</h3>
+  <table>
+    <tr><th>日</th><th>1時間目</th><th>2時間目</th><th>3時間目</th></tr>
+    <tr><td>1日目</td><td>共通共通数学（70）</td><td>文系社会（100）</td><td>-</td></tr>
+    <tr><td>2日目</td><td>古文</td><td>英作文</td><td>文系現代国語（60）</td></tr>
+    <tr><td>3日目</td><td>現代国語</td><td>文系古文（60）</td><td>文系理科（65）</td></tr>
+    <tr><td>4日目</td><td>共通英語</td><td>漢文</td><td>共通数学（60）</td></tr>
+    <tr><td>5日目</td><td>文系数学（60）</td><td>英読解（60）</td><td>-</td></tr>
+  </table>
+</div>
+
+<script>
+function showTable(type) {
+  document.getElementById("science").classList.add("hidden");
+  document.getElementById("arts").classList.add("hidden");
+  document.getElementById(type).classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
