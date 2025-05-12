@@ -1,118 +1,184 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>時間割表示</title>
-  <style>
-    body {
-      font-family: "Yu Gothic", "Segoe UI", sans-serif;
-      background: linear-gradient(to bottom, #00f6ff, #00f6ff);
-      color: #333;
-      text-align: center;
-      padding: 30px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>時間割表示</title>
+    <style>
+        body {
+            font-family: 'Yu Gothic', 'Meiryo', sans-serif; /* ゴシック系フォントを指定 */
+            background-color: #f0f4f8; /* 背景色を薄い青灰色に */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    h2 {
-      margin-bottom: 20px;
-    }
+        h1 {
+            color: #333;
+        }
 
-    button {
-      font-size: 20px;
-      padding: 15px 40px;
-      margin: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    }
+        .button-container {
+            margin-bottom: 30px; /* ボタンと表の間隔 */
+            display: flex;
+            gap: 20px; /* ボタン間の隙間 */
+        }
 
-    .science-btn {
-      background-color: #4285F4;
-      color: white;
-    }
+        .choice-button {
+            padding: 20px 40px; /* ボタンのサイズを大きめに */
+            font-size: 1.2em; /* 文字サイズを少し大きく */
+            font-weight: bold;
+            color: #fff; /* 文字色を白に */
+            border: none;
+            border-radius: 8px; /* 角を少し丸める */
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s; /* ホバー時の変化を滑らかに */
+            min-width: 150px; /* 最小幅を設定 */
+            text-align: center;
+        }
 
-    .arts-btn {
-      background-color: #D32F2F;
-      color: white;
-    }
+        #rikei-btn {
+            background-color: #4a90e2; /* 理系ボタンの色 (青系) */
+        }
+        #rikei-btn:hover {
+            background-color: #357abd; /* ホバー時の色 */
+        }
+        #rikei-btn:active {
+            transform: scale(0.98); /* クリック時の縮小効果 */
+        }
 
-    button:hover {
-      opacity: 0.85;
-      transform: scale(1.03);
-    }
 
-    table {
-      margin: 30px auto;
-      border-collapse: collapse;
-      width: 80%;
-      max-width: 700px;
-      background-color: white;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
+        #bunkei-btn {
+            background-color: #e4717a; /* 文系ボタンの色 (赤系) */
+        }
+        #bunkei-btn:hover {
+            background-color: #d05a64; /* ホバー時の色 */
+        }
+         #bunkei-btn:active {
+            transform: scale(0.98); /* クリック時の縮小効果 */
+        }
 
-    th, td {
-      border: 1px solid #999;
-      padding: 12px;
-      text-align: center;
-      font-size: 16px;
-    }
+        #timetable-container {
+            width: 80%; /* 表の幅 */
+            max-width: 800px; /* 最大幅 */
+            background-color: #ffffff; /* 表の背景を白に */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 影をつけて立体感を出す */
+            overflow-x: auto; /* 横幅が足りない場合にスクロール */
+        }
 
-    th {
-      background-color: #f1f1f1;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse; /* 罫線を重ねる */
+            margin-top: 15px;
+        }
 
-    .hidden {
-      display: none;
-    }
+        th, td {
+            border: 1px solid #d1d9e6; /* 罫線の色 */
+            padding: 12px; /* セルの内側の余白 */
+            text-align: center;
+            min-width: 80px; /* セルの最小幅 */
+        }
 
-    h3 {
-      margin-top: 30px;
-      font-size: 24px;
-      color: #333;
-    }
-  </style>
+        th {
+            background-color: #e6ecf3; /* ヘッダー行の背景色 */
+            color: #333;
+            font-weight: bold;
+        }
+
+        td {
+            color: #555;
+        }
+
+        /* 奇数行の背景色を変えて見やすくする (ストライプ) */
+        tbody tr:nth-child(odd) {
+            background-color: #f8fafd;
+        }
+
+         /* 初期メッセージ用 */
+        .placeholder {
+            color: #888;
+            text-align: center;
+            padding: 40px 0;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
 
-<h2>コースを選んでください</h2>
-<button class="science-btn" onclick="showTable('science')">理系</button>
-<button class="arts-btn" onclick="showTable('arts')">文系</button>
+    <h1>時間割</h1>
 
-<!-- 理系の時間割 -->
-<div id="science" class="hidden">
-  <h3>理系時間割</h3>
-  <table>
-    <tr><th>日</th><th>1時間目</th><th>2時間目</th><th>3時間目</th></tr>
-    <tr><td>1日目</td><td>共通共通数学（70）</td><td>理系社会</td><td>理系生物・物理（60）</td></tr>
-    <tr><td>2日目</td><td>古文</td><td>英作文</td><td>-</td></tr>
-    <tr><td>3日目</td><td>現代国語</td><td>理系数学（60）</td><td>-</td></tr>
-    <tr><td>4日目</td><td>共通英語</td><td>漢文</td><td>共通数学（60）</td></tr>
-    <tr><td>5日目</td><td>理系化学（60）</td><td>英読解（60）</td><td>-</td></tr>
-  </table>
-</div>
+    <div class="button-container">
+        <button id="rikei-btn" class="choice-button">理系</button>
+        <button id="bunkei-btn" class="choice-button">文系</button>
+    </div>
 
-<!-- 文系の時間割 -->
-<div id="arts" class="hidden">
-  <h3>文系時間割</h3>
-  <table>
-    <tr><th>日</th><th>1時間目</th><th>2時間目</th><th>3時間目</th></tr>
-    <tr><td>1日目</td><td>共通共通数学（70）</td><td>文系社会（100）</td><td>-</td></tr>
-    <tr><td>2日目</td><td>古文</td><td>英作文</td><td>文系現代国語（60）</td></tr>
-    <tr><td>3日目</td><td>現代国語</td><td>文系古文（60）</td><td>文系理科（65）</td></tr>
-    <tr><td>4日目</td><td>共通英語</td><td>漢文</td><td>共通数学（60）</td></tr>
-    <tr><td>5日目</td><td>文系数学（60）</td><td>英読解（60）</td><td>-</td></tr>
-  </table>
-</div>
+    <div id="timetable-container">
+        <div class="placeholder">上のボタンを押して時間割を表示してください。</div>
+        </div>
 
-<script>
-function showTable(type) {
-  document.getElementById("science").classList.add("hidden");
-  document.getElementById("arts").classList.add("hidden");
-  document.getElementById(type).classList.remove("hidden");
-}
-</script>
+    <script>
+        // 時間割データ
+        const timetables = {
+            rikei: [
+                { day: "1日目", periods: ["共通数学", "理系社会", "理系生物・物理"] },
+                { day: "2日目", periods: ["古文", "英作文", ""] }, // 3限目がない場合は空文字
+                { day: "3日目", periods: ["現代国語", "理系数学", ""] },
+                { day: "4日目", periods: ["共通英語", "漢文", "共通数学"] },
+                { day: "5日目", periods: ["理系化学", "英読解", ""] }
+            ],
+            bunkei: [
+                { day: "1日目", periods: ["共通数学", "文系社会", ""] }, // 3限目がない場合は空文字
+                { day: "2日目", periods: ["古文", "英作文", "文系現代国語"] },
+                { day: "3日目", periods: ["現代国語", "文系古文", "文系理科"] },
+                { day: "4日目", periods: ["共通英語", "漢文", "共通数学"] },
+                { day: "5日目", periods: ["文系数学", "英読解", ""] }
+            ]
+        };
+
+        // テーブルを生成して表示する関数
+        function displayTimetable(type) {
+            const container = document.getElementById('timetable-container');
+            const data = timetables[type];
+            if (!data) return; // データがない場合は何もしない
+
+            // 最大の時限数を計算（今回は3限まで固定）
+            const maxPeriods = 3;
+
+            // テーブルHTMLを生成
+            let tableHTML = '<table><thead><tr><th>日付</th>';
+            for (let i = 1; i <= maxPeriods; i++) {
+                tableHTML += `<th>${i}限</th>`;
+            }
+            tableHTML += '</tr></thead><tbody>';
+
+            data.forEach(item => {
+                tableHTML += `<tr><td>${item.day}</td>`;
+                for (let i = 0; i < maxPeriods; i++) {
+                    // データが存在すれば表示、なければ空のセル
+                    tableHTML += `<td>${item.periods[i] || ''}</td>`;
+                }
+                tableHTML += '</tr>';
+            });
+
+            tableHTML += '</tbody></table>';
+
+            // コンテナにテーブルHTMLを挿入
+            container.innerHTML = tableHTML;
+        }
+
+        // ボタンにイベントリスナーを設定
+        document.getElementById('rikei-btn').addEventListener('click', () => {
+            displayTimetable('rikei');
+        });
+
+        document.getElementById('bunkei-btn').addEventListener('click', () => {
+            displayTimetable('bunkei');
+        });
+
+    </script>
 
 </body>
 </html>
