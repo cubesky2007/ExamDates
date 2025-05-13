@@ -152,7 +152,12 @@
             for (let i = 1; i <= maxPeriods; i++) {
                 tableHTML += `<th>${i}限</th>`;
             }
-            tableHTML += '</tr></thead><tbody>';
+            const subject = item.periods[i];
+            const linked = subject
+                ? `<a href="kyouka.html?subject=${encodeURIComponent(subject)}" class="subject-link">${subject}</a>`
+                : '';
+            tableHTML += `<td>${linked}</td>`;
+
 
             data.forEach(item => {
                 tableHTML += `<tr><td>${item.day}</td>`;
