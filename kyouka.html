@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>教科別ページ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Yu Gothic', 'Meiryo', sans-serif;
+            background-color: #f0f4f8;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        input, button {
+            font-size: 1em;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        #entryList {
+            list-style: none;
+            padding-left: 0;
+        }
+        li {
+            background-color: #fff;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1 id="subject-title">教科ページ</h1>
+
+    <input type="text" id="entryInput" placeholder="例：p.12〜25 一次関数の復習">
+    <button onclick="addEntry()">追加</button>
+
+    <ul id="entryList"></ul>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const subject = urlParams.get('subject') || "未指定";
+        document.getElementById("subject-title").textContent = subject;
+
+        const storageKey = "entries_" + subject;
+        const input = document.getElementById("entryInput");
+        const list = document.getElementById("entryList");
+
+        function loadEntries() {
+            const entries = JSON.parse(localStorage.getItem(storageKey) || "[]");
+            list.innerHTML = "";
+            entries.forEach(entry => {
+                const li = document.createElement("li");
+                li.textContent = entry;
+                list.appendChild(li);
+            });
+        }
+
+        function addEntry() {
+            const value = input.value.trim();
+            if (!value) return;
+            const entries = JSON.parse(localStorage.getItem(storageKey) || "[]");
+            entries.push(value);
+            localStorage.setItem(storageKey, JSON.stringify(entries));
+            input.value = "";
+            loadEntries();
+        }
+
+        loadEntries();
+    </script>
+</body>
+</html>
